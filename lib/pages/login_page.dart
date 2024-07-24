@@ -22,7 +22,6 @@ class _LoginPageState extends State<LoginPage> {
   String username = "";
   String password = "";
   String confirmedPassword = "";
-  var _controller = TextEditingController();
 
   Future<void> login(String username, String password) async {
     String loginUrl = "https://fakestoreapi.com/auth/login";
@@ -33,7 +32,8 @@ class _LoginPageState extends State<LoginPage> {
       print("User logged in");
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
-      bool isLoggedIn = await sharedPreferences.setBool("isLoggedIn", true);
+      await sharedPreferences.setBool("isLoggedIn", true);
+      await sharedPreferences.setString("currentUser", username);
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(

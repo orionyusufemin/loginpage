@@ -14,11 +14,11 @@ class MyBottomNavBar extends StatelessWidget {
         onTabChange: (value) => onTabChange!(value), //onemlı
         padding: EdgeInsets.all(25),
         tabBorderRadius: 5,
-        color: Colors.grey,
+        color: Colors.black,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         activeColor: Colors.black,
         tabActiveBorder: Border.all(color: Colors.grey.shade700),
-        tabBackgroundColor: Colors.white,
+        tabBackgroundColor: Colors.orange.shade200,
         tabs: [
           //onemlı
           GButton(
@@ -28,6 +28,10 @@ class MyBottomNavBar extends StatelessWidget {
           GButton(
             icon: Icons.shopping_cart_rounded,
             text: "Cart",
+          ),
+          GButton(
+            icon: Icons.person,
+            text: "Your profile",
           ),
         ],
       ),
