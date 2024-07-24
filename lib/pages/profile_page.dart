@@ -1,7 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings, sort_child_properties_last
+
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shoppingapp/models/user.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -11,12 +14,14 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String currentUser = "";
+  late User currentUser;
   bool isCurrentUserFetched = false;
 
-  Future<void> getUsername() async {
+  Future<void> getCurrentUser() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    currentUser = sharedPreferences.getString("currentUser") ?? "johnd";
+    currentUser =
+        User.fromJson(jsonDecode(sharedPreferences.getString("currentUser")!));
+
     setState(() {
       isCurrentUserFetched = true;
     });
@@ -26,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getUsername();
+    getCurrentUser();
   }
 
   @override
@@ -35,18 +40,27 @@ class _ProfilePageState extends State<ProfilePage> {
         ? Column(
             children: [
               Center(
-                child: CircleAvatar(
-                    child: Icon(
-                  Icons.person_3,
-                  size: 36,
-                )),
+                child: Container(
+                  width: 200,
+                  height: 200,
+                  child: Image(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                          "https://st3.depositphotos.com/15648834/17930/v/950/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg")),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(50)),
+                ),
               ),
               Center(
                 child: Text(
-                  "Hi, " + currentUser,
+                  "Hi, " +
+                      currentUser.name.firstname +
+                      " " +
+                      currentUser.name.lastname,
                   style: TextStyle(fontWeight: FontWeight.w300, fontSize: 36),
                 ),
               ),
+              Card()
             ],
           )
         : CircularProgressIndicator(

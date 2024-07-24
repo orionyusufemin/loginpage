@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shoppingapp/models/user.dart';
 import 'package:shoppingapp/pages/feed_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -13,6 +16,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  User? currentUser;
+  List<User> users = [];
   bool isLoginPage = false;
   bool isDone = false;
   bool isChecked = false;
@@ -28,20 +33,35 @@ class _LoginPageState extends State<LoginPage> {
     final response = await http.post(Uri.parse(loginUrl),
         body: {"username": username, "password": password});
     if (response.statusCode == 200) {
+      String getUsersUrl = "https://fakestoreapi.com/users";
+      final response1 = await http.get(Uri.parse(getUsersUrl));
+      if (response1.statusCode == 200) {
+        List<dynamic> responseList = jsonDecode(response1.body)  as List<dynamic>;
+        users = responseList.map((json) => User.fromJson(json)).toList();
+        for (var user in users) {
+          if (user.username == username) {
+            //user found
+            currentUser = user;
+          }
+        }
+        print("User logged in");
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        await sharedPreferences.setBool("isLoggedIn", true);
+        await sharedPreferences.setString(
+            "currentUser", jsonEncode(currentUser));
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FeedPage(),
+            ));
+      } else {
+        print("failed to fetch users");
+      }
       //user logged in
-      print("User logged in");
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-      await sharedPreferences.setBool("isLoggedIn", true);
-      await sharedPreferences.setString("currentUser", username);
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => FeedPage(),
-          ));
     } else {
       //failed
-      print("failed");
+      print("failed to login");
     }
   }
 
