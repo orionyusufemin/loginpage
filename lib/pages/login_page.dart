@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shoppingapp/models/user.dart';
+import 'package:shoppingapp/models/User.dart';
 import 'package:shoppingapp/pages/feed_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -16,7 +16,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  User? currentUser;
   List<User> users = [];
   bool isLoginPage = false;
   bool isDone = false;
@@ -29,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   String confirmedPassword = "";
 
   Future<void> login(String username, String password) async {
+    User currentUser;
     String loginUrl = "https://fakestoreapi.com/auth/login";
     final response = await http.post(Uri.parse(loginUrl),
         body: {"username": username, "password": password});
@@ -36,28 +36,30 @@ class _LoginPageState extends State<LoginPage> {
       String getUsersUrl = "https://fakestoreapi.com/users";
       final response1 = await http.get(Uri.parse(getUsersUrl));
       if (response1.statusCode == 200) {
-        List<dynamic> responseList = jsonDecode(response1.body)  as List<dynamic>;
+        List<dynamic> responseList =
+            jsonDecode(response1.body) as List<dynamic>;
         users = responseList.map((json) => User.fromJson(json)).toList();
         for (var user in users) {
           if (user.username == username) {
-            //user found
             currentUser = user;
+            //user found
+            print("User logged in");
+            SharedPreferences sharedPreferences =
+                await SharedPreferences.getInstance();
+            await sharedPreferences.setBool("isLoggedIn", true);
+            await sharedPreferences.setString(
+                "currentUser", jsonEncode(currentUser));
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FeedPage(),
+                ));
+          } else {
+            print("failed to fetch users");
           }
         }
-        print("User logged in");
-        SharedPreferences sharedPreferences =
-            await SharedPreferences.getInstance();
-        await sharedPreferences.setBool("isLoggedIn", true);
-        await sharedPreferences.setString(
-            "currentUser", jsonEncode(currentUser));
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FeedPage(),
-            ));
-      } else {
-        print("failed to fetch users");
       }
+
       //user logged in
     } else {
       //failed
@@ -66,8 +68,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> checkLoginStatus() async {
+    User currentUser;
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     bool isLoggedIn = sharedPreferences.getBool("isLoggedIn") ?? false;
+    //currentUser = jsonDecode(sharedPreferences.getString("currentUser") ?? "");
     if (isLoggedIn) {
       Navigator.pushReplacement(
           context,
@@ -103,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       Center(
                         child: Container(
-                          padding: EdgeInsets.only(top: 70),
+                          padding: EdgeInsets.only(top: 3),
                           child: Text(
                             "Hey there,",
                             style: TextStyle(
@@ -114,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Center(
                         child: Container(
-                          padding: EdgeInsets.only(top: 13),
+                          padding: EdgeInsets.only(top: 3),
                           child: Text(
                             "Welcome back!",
                             style: TextStyle(
@@ -368,7 +372,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.all(8),
+                        padding: EdgeInsets.all(2),
                         child: Row(
                           children: [
                             Checkbox(
@@ -388,7 +392,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.all(8),
+                        padding: EdgeInsets.all(1),
                         child: Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
@@ -409,27 +413,11 @@ class _LoginPageState extends State<LoginPage> {
                               child: Text(
                                 "REGISTER",
                                 style: TextStyle(
-                                    fontSize: 24, color: Colors.white),
+                                    fontSize: 5, color: Colors.white),
                               )),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "LOGIN",
-                              style: TextStyle(
-                                  fontSize: 56, fontWeight: FontWeight.bold),
-                            ),
-                            Icon(
-                              Icons.add,
-                              size: 56,
-                            )
-                          ],
-                        ),
-                      ),
+                      
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
