@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:shoppingapp/components/round_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class MyBarChart extends StatefulWidget {
@@ -295,25 +296,7 @@ class _MyBarChartState extends State<MyBarChart> {
           Padding(
               padding: EdgeInsets.all(10),
               child: !isSwitched4
-                  ? SfCircularChart(
-                      tooltipBehavior: _tooltip,
-                      margin: EdgeInsets.all(0),
-                      series: <CircularSeries<_ChartData, String>>[
-                          DoughnutSeries(
-                            enableTooltip: true,
-                            dataSource: data1,
-                            xValueMapper: (_ChartData data1, index) => data1.x,
-                            sortingOrder: SortingOrder.descending,
-                            dataLabelMapper: (data1, index) =>
-                                data1.x.toString() +
-                                " % " +
-                                (data1.y / 100).toString(),
-                            dataLabelSettings: DataLabelSettings(
-                                isVisible: true, color: Colors.white),
-                            yValueMapper: (_ChartData data1, index) => data1.y,
-                            name: "Ödeme tipi",
-                          )
-                        ])
+                  ? RoundChart(tooltip: _tooltip,)
                   : Text("tablo 4")),
           Divider(
             color: Colors.black,
