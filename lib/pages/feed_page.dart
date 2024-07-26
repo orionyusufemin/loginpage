@@ -9,8 +9,8 @@ import 'package:shoppingapp/pages/shop_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FeedPage extends StatefulWidget {
-  
-  FeedPage({super.key});
+  User currentUser;
+  FeedPage({super.key,required this.currentUser});
 
   @override
   State<FeedPage> createState() => _FeedPageState();
@@ -18,14 +18,7 @@ class FeedPage extends StatefulWidget {
 
 class _FeedPageState extends State<FeedPage> {
   bool isCurrentUserFetched = false;
-  Future<void> getCurrentUser() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    setState(() {
-      currentUser =
-          jsonEncode(sharedPreferences.getString("currentUser")) as User;
-      isCurrentUserFetched = true;
-    });
-  }
+  
 
   int _selectedIndex = 0;
 
@@ -45,13 +38,7 @@ class _FeedPageState extends State<FeedPage> {
   void initState() {
     super.initState();
 
-    _pages = [
-      ShopPage(),
-      CartPage(
-        
-      ),
-      ProfilePage()
-    ];
+    _pages = [ShopPage(), CartPage(id: widget.currentUser.id,), ProfilePage()];
   }
 
   @override

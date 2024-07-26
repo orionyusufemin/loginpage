@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 
-import 'package:shoppingapp/models/Product.dart';
+import 'package:shoppingapp/models/product.dart';
+import 'package:shoppingapp/pages/chart_page.dart';
+import 'package:shoppingapp/pages/details_page.dart';
 
 class ProductTile extends StatefulWidget {
   final List<Product> products;
@@ -37,7 +39,15 @@ class _ProductTileState extends State<ProductTile> {
           Column(
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  //product clicked
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ChartPage(),
+                      ));
+                },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(25),
                   child: SizedBox(
@@ -56,10 +66,11 @@ class _ProductTileState extends State<ProductTile> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Icon(Icons.shopping_cart),
-                    Text(
-                      "Product name",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
+                    Expanded(
+                      child: Text(
+                        widget.products[widget.index].title,
+                        style: TextStyle(fontWeight: FontWeight.w300),
+                      ),
                     ),
                   ],
                 ),

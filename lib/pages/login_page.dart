@@ -28,7 +28,6 @@ class _LoginPageState extends State<LoginPage> {
   String confirmedPassword = "";
 
   Future<void> login(String username, String password) async {
-    User currentUser;
     String loginUrl = "https://fakestoreapi.com/auth/login";
     final response = await http.post(Uri.parse(loginUrl),
         body: {"username": username, "password": password});
@@ -41,19 +40,19 @@ class _LoginPageState extends State<LoginPage> {
         users = responseList.map((json) => User.fromJson(json)).toList();
         for (var user in users) {
           if (user.username == username) {
-            currentUser = user;
-            //user found
-            print("User logged in");
             SharedPreferences sharedPreferences =
                 await SharedPreferences.getInstance();
-            await sharedPreferences.setBool("isLoggedIn", true);
-            await sharedPreferences.setString(
-                "currentUser", jsonEncode(currentUser));
+            sharedPreferences.setString("currentUser", jsonEncode(user));
+            //user found
+            print("User logged in");
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => FeedPage(),
+                  builder: (context) => FeedPage(
+                    currentUser: user,
+                  ),
                 ));
+            break;
           } else {
             print("failed to fetch users");
           }
@@ -68,15 +67,18 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> checkLoginStatus() async {
-    User currentUser;
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     bool isLoggedIn = sharedPreferences.getBool("isLoggedIn") ?? false;
-    //currentUser = jsonDecode(sharedPreferences.getString("currentUser") ?? "");
-    if (isLoggedIn) {
+    String currentUserString =
+        sharedPreferences.getString("currentUser") ?? "bos";
+    User currentUser = User.fromJson(jsonDecode(currentUserString));
+    if (isLoggedIn && currentUser.toString() != "bos") {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => FeedPage(),
+            builder: (context) => FeedPage(
+              currentUser: currentUser,
+            ),
           ));
       setState(() {
         isDone = true;
@@ -195,7 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                               borderRadius: BorderRadius.circular(15),
                               color: Colors.purple),
                           child: TextButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 //login clicked
                                 login(username, password);
                               },
@@ -412,12 +414,11 @@ class _LoginPageState extends State<LoginPage> {
                               },
                               child: Text(
                                 "REGISTER",
-                                style: TextStyle(
-                                    fontSize: 5, color: Colors.white),
+                                style:
+                                    TextStyle(fontSize: 5, color: Colors.white),
                               )),
                         ),
                       ),
-                      
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

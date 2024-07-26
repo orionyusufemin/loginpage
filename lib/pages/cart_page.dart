@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shoppingapp/components/product_tile.dart';
-import 'package:shoppingapp/models/Product.dart';
+import 'package:shoppingapp/models/product.dart';
+import 'package:shoppingapp/models/cart_product.dart';
 
 class CartPage extends StatefulWidget {
-  CartPage({super.key});
+  int id;
+  CartPage({super.key, required this.id});
 
   @override
   State<CartPage> createState() => _ProfilePageState();
@@ -14,16 +16,18 @@ class CartPage extends StatefulWidget {
 
 class _ProfilePageState extends State<CartPage> {
   bool isCartProductsFetched = false;
-  List<Product> cartProducts = [];
+  List<CartProduct> cartProducts = [];
 
-  Future<void> getCartproducts(String category) async {
-    String getCartProductsUrl = "https://fakestoreapi.com/carts/user/1";
+  Future<void> getCartproducts() async {
+    String getCartProductsUrl =
+        "https://fakestoreapi.com/carts/user/${widget.id}";
     final response = await http.get(Uri.parse(getCartProductsUrl));
     if (response.statusCode == 200) {
       setState(() {
         List<dynamic> jsonList = jsonDecode(response.body) as List<dynamic>;
-        cartProducts = jsonList.map((json) => Product.fromJson(json)).toList();
+        cartProducts = jsonList.map((json) => CartProduct.fromJson(json)).toList();
         isCartProductsFetched = true;
+        print(cartProducts.toString());
       });
     } else {
       print("failed to fetch category products");
@@ -31,13 +35,14 @@ class _ProfilePageState extends State<CartPage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCartproducts();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: ListView.builder(
-      itemBuilder: (context, index) {
-        return ProductTile(products: cartProducts, index: index);
-      },
-      itemCount: cartProducts.length,
-    ));
+    return Text(widget.id.toString());
   }
 }
