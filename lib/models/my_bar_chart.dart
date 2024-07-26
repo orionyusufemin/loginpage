@@ -12,13 +12,18 @@ class MyBarChart extends StatefulWidget {
 }
 
 class _MyBarChartState extends State<MyBarChart> {
-  bool isSwitched = false;
+  bool isSwitched1 = false;
+  bool isSwitched2 = false;
+  bool isSwitched3 = false;
+  bool isSwitched4 = false;
+  bool isSwitched5 = false;
   List<String> monthNames = ["May", "Haz", "Temm", "Agu", "Eyl", "Ekm"];
   List<int> saleCount = [23423, 89763, 12974, 65384, 92648, 42638];
   List<int> saleCount1 = [3423, 12331, 12174, 6575, 1213, 6787];
 
   late List<_ChartData> data;
   late List<_ChartData> data1;
+  late List<_ChartData1> data2;
   late TooltipBehavior _tooltip;
 
   @override
@@ -33,12 +38,19 @@ class _MyBarChartState extends State<MyBarChart> {
       _ChartData("Yemek Sepeti", 743298),
     ];
     data1 = [
-      _ChartData("Kredi Karti", 7421),
+      _ChartData("Kredi Kart", 7421),
       _ChartData("Nakit", 1068),
-      _ChartData("Yemek Ceki", 1272),
+      _ChartData("Cek", 1272),
       _ChartData("Cari Hesap", 237),
       _ChartData("Zayi", 1),
       _ChartData("Yonetim", 1),
+    ];
+    data2 = [
+      _ChartData1(2020, 12000000),
+      _ChartData1(2021, 34000000),
+      _ChartData1(2022, 19000000),
+      _ChartData1(2023, 25000000),
+      _ChartData1(2024, 36000000),
     ];
     _tooltip = TooltipBehavior(enable: true);
   }
@@ -49,33 +61,36 @@ class _MyBarChartState extends State<MyBarChart> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(0),
+            padding: const EdgeInsets.all(20),
             child: Text(
               "Aylık Satış",
               style: TextStyle(fontSize: 48),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Graph view"),
-              Switch(
-                value: isSwitched,
-                onChanged: (value) {
-                  setState(() {
-                    isSwitched = value;
-                  });
-                },
-              ),
-              Text("Table view")
-            ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Graph view"),
+                Switch(
+                  value: isSwitched1,
+                  onChanged: (value) {
+                    setState(() {
+                      isSwitched1 = value;
+                    });
+                  },
+                ),
+                Text("Table view")
+              ],
+            ),
           ),
           Container(
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(color: Colors.black54),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.5,
-            child: !isSwitched
+            child: !isSwitched1
                 ? BarChart(BarChartData(
                     maxY: 100000,
                     backgroundColor: Colors.black26,
@@ -123,11 +138,32 @@ class _MyBarChartState extends State<MyBarChart> {
                     )))
                 : Text("sasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
           ),
+          Divider(
+            color: Colors.black,
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               "Toplam Gelir",
               style: TextStyle(fontSize: 48),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Graph view"),
+                Switch(
+                  value: isSwitched2,
+                  onChanged: (value) {
+                    setState(() {
+                      isSwitched2 = value;
+                    });
+                  },
+                ),
+                Text("Table view")
+              ],
             ),
           ),
           Container(
@@ -171,11 +207,32 @@ class _MyBarChartState extends State<MyBarChart> {
                   },
                 ))),
           ),
+          Divider(
+            color: Colors.black,
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               "Toplam Satış",
               style: TextStyle(fontSize: 48),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Graph view"),
+                Switch(
+                  value: isSwitched3,
+                  onChanged: (value) {
+                    setState(() {
+                      isSwitched3 = value;
+                    });
+                  },
+                ),
+                Text("Table view")
+              ],
             ),
           ),
           Padding(
@@ -187,9 +244,11 @@ class _MyBarChartState extends State<MyBarChart> {
                   isTransposed: false,
                   backgroundColor: Colors.black,
                   primaryXAxis: CategoryAxis(
+                    labelStyle: TextStyle(color: Colors.white),
                     majorGridLines: MajorGridLines(width: 0),
                   ),
                   primaryYAxis: NumericAxis(
+                    labelStyle: TextStyle(color: Colors.white),
                     minimum: 0,
                     maximum: 1000000,
                     interval: 100000,
@@ -205,6 +264,9 @@ class _MyBarChartState extends State<MyBarChart> {
                   ]),
             ),
           ),
+          Divider(
+            color: Colors.black,
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
@@ -213,24 +275,99 @@ class _MyBarChartState extends State<MyBarChart> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(0),
-            child: SfCircularChart(
-                tooltipBehavior: _tooltip,
-                margin: EdgeInsets.all(0),
-                series: <CircularSeries<_ChartData, String>>[
-                  DoughnutSeries(
-                    enableTooltip: true,
-                    dataSource: data1,
-                    xValueMapper: (_ChartData data1, index) => data1.x,
-                    sortingOrder: SortingOrder.descending,
-                    dataLabelMapper: (data1, index) =>
-                        data1.x.toString() + " % " + (data1.y / 100).toString(),
-                    dataLabelSettings: DataLabelSettings(isVisible: true),
-                    yValueMapper: (_ChartData data1, index) => data1.y,
-                    name: "Ödeme tipi",
-                  )
-                ]),
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Graph view"),
+                Switch(
+                  value: isSwitched4,
+                  onChanged: (value) {
+                    setState(() {
+                      isSwitched4 = value;
+                    });
+                  },
+                ),
+                Text("Table view")
+              ],
+            ),
           ),
+          Padding(
+              padding: EdgeInsets.all(10),
+              child: !isSwitched4
+                  ? SfCircularChart(
+                      tooltipBehavior: _tooltip,
+                      margin: EdgeInsets.all(0),
+                      series: <CircularSeries<_ChartData, String>>[
+                          DoughnutSeries(
+                            enableTooltip: true,
+                            dataSource: data1,
+                            xValueMapper: (_ChartData data1, index) => data1.x,
+                            sortingOrder: SortingOrder.descending,
+                            dataLabelMapper: (data1, index) =>
+                                data1.x.toString() +
+                                " % " +
+                                (data1.y / 100).toString(),
+                            dataLabelSettings: DataLabelSettings(
+                                isVisible: true, color: Colors.white),
+                            yValueMapper: (_ChartData data1, index) => data1.y,
+                            name: "Ödeme tipi",
+                          )
+                        ])
+                  : Text("tablo 4")),
+          Divider(
+            color: Colors.black,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Yıllık Kar",
+              style: TextStyle(fontSize: 48),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Graph view"),
+                Switch(
+                  value: isSwitched5,
+                  onChanged: (value) {
+                    setState(() {
+                      isSwitched5 = value;
+                    });
+                  },
+                ),
+                Text("Table view")
+              ],
+            ),
+          ),
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: !isSwitched5
+                  ? SfCartesianChart(
+                      backgroundColor: Colors.grey,
+                      tooltipBehavior: _tooltip,
+                      primaryXAxis: CategoryAxis(
+                        labelStyle: TextStyle(color: Colors.black),
+                      ),
+                      primaryYAxis: NumericAxis(
+                        labelStyle: TextStyle(color: Colors.black),
+                      ),
+                      series: <CartesianSeries>[
+                        LineSeries<_ChartData1, int>(
+                          width: 5,
+                          name: "Yıllık Kar",
+                          dashArray: <double>[10, 10],
+                          enableTooltip: true,
+                          dataSource: data2,
+                          xValueMapper: (_ChartData1 data2, index) => data2.x,
+                          yValueMapper: (_ChartData1 data2, index) => data2.y,
+                        )
+                      ],
+                    )
+                  : Text("tablo 5 "))
         ],
       ),
     );
@@ -241,5 +378,12 @@ class _ChartData {
   _ChartData(this.x, this.y);
 
   final String x;
+  final double y;
+}
+
+class _ChartData1 {
+  _ChartData1(this.x, this.y);
+
+  final int x;
   final double y;
 }
