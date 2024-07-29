@@ -59,21 +59,21 @@ class _FeedPageState extends State<FeedPage> {
             Text(
               "Shopping App",
               style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 48,
                   fontWeight: FontWeight.w500),
             ),
             Text(
               "Hey ${widget.currentUser.name.firstname}",
               style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 36,
                   fontWeight: FontWeight.w200),
             ),
             Text(
               "Good to See you",
               style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 28,
                   fontWeight: FontWeight.w200),
             ),
@@ -94,7 +94,7 @@ class _FeedPageState extends State<FeedPage> {
         ),
       ),
       body: _pages[_selectedIndex],
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(

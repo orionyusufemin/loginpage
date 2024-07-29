@@ -24,7 +24,7 @@ class _ShopPageState extends State<ShopPage> {
   Future<void> getCategories() async {
     String categoriesUrl = "https://fakestoreapi.com/products/categories";
     final response = await http.get(Uri.parse(categoriesUrl));
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200&&mounted) {
       setState(() {
         categoryNameList = jsonDecode(response.body) as List<dynamic>;
       });

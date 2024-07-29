@@ -88,8 +88,10 @@ class _MyBarChartState extends State<MyBarChart> {
             ),
           ),
           Container(
+            margin: EdgeInsets.all(20),
             padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(color: Colors.black54),
+            decoration: BoxDecoration(
+                color: Colors.black54, borderRadius: BorderRadius.circular(25)),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.5,
             child: !isSwitched1
@@ -138,7 +140,26 @@ class _MyBarChartState extends State<MyBarChart> {
                         ]);
                       },
                     )))
-                : Text("sasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+                : DataTable(
+                    columnSpacing: 5,
+                    columns: List.generate(
+                      monthNames.length,
+                      (index) {
+                        return DataColumn(label: Text(monthNames[index]));
+                      },
+                    ),
+                    rows: List.generate(
+                      1,
+                      (index) {
+                        return DataRow(
+                            cells: List.generate(
+                          saleCount.length,
+                          (index) {
+                            return DataCell(Text(saleCount[index].toString()));
+                          },
+                        ));
+                      },
+                    )),
           ),
           Divider(
             color: Colors.black,
@@ -169,46 +190,70 @@ class _MyBarChartState extends State<MyBarChart> {
             ),
           ),
           Container(
-            padding: EdgeInsets.all(10),
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.5,
-            decoration: BoxDecoration(color: Colors.black54),
-            child: BarChart(BarChartData(
-                maxY: 200000,
-                gridData: FlGridData(show: false),
-                backgroundColor: Colors.black26,
-                titlesData: FlTitlesData(
-                    leftTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                      reservedSize: 58,
-                      showTitles: true,
-                      getTitlesWidget: (value, meta) {
-                        return Text(
-                          value.toString(),
-                          style: TextStyle(),
-                        );
-                      },
-                    )),
-                    bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                      showTitles: true,
-                      getTitlesWidget: (value, meta) {
-                        int index = value.toInt();
-                        return Text(
-                          monthNames[index].toString(),
-                          style: TextStyle(color: Colors.white),
-                        );
-                      },
-                    ))),
-                barGroups: List.generate(
-                  saleCount.length,
-                  (index) {
-                    return BarChartGroupData(x: index, barRods: [
-                      BarChartRodData(toY: saleCount1[index] * 14, width: 12)
-                    ]);
-                  },
-                ))),
-          ),
+              margin: EdgeInsets.all(20),
+              padding: EdgeInsets.all(10),
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * 0.5,
+              decoration: BoxDecoration(
+                  color: Colors.black54,
+                  borderRadius: BorderRadius.circular(20)),
+              child: !isSwitched2
+                  ? BarChart(BarChartData(
+                      maxY: 200000,
+                      gridData: FlGridData(show: false),
+                      backgroundColor: Colors.black26,
+                      titlesData: FlTitlesData(
+                          leftTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                            reservedSize: 58,
+                            showTitles: true,
+                            getTitlesWidget: (value, meta) {
+                              return Text(
+                                value.toString(),
+                                style: TextStyle(),
+                              );
+                            },
+                          )),
+                          bottomTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                            showTitles: true,
+                            getTitlesWidget: (value, meta) {
+                              int index = value.toInt();
+                              return Text(
+                                monthNames[index].toString(),
+                                style: TextStyle(color: Colors.white),
+                              );
+                            },
+                          ))),
+                      barGroups: List.generate(
+                        saleCount.length,
+                        (index) {
+                          return BarChartGroupData(x: index, barRods: [
+                            BarChartRodData(
+                                toY: saleCount1[index] * 14, width: 12)
+                          ]);
+                        },
+                      )))
+                  : DataTable(
+                      columns: List.generate(
+                        monthNames.length,
+                        (index) {
+                          return DataColumn(label: Text(monthNames[index]));
+                        },
+                      ),
+                      rows: List.generate(
+                        1,
+                        (index) {
+                          return DataRow(
+                              cells: List.generate(
+                            saleCount1.length,
+                            (index) {
+                              return DataCell(
+                                  Text(saleCount1[index].toString()));
+                            },
+                          ));
+                        },
+                      ))),
           Divider(
             color: Colors.black,
           ),
@@ -413,9 +458,10 @@ class _MyBarChartState extends State<MyBarChart> {
                                 enablePanning: true,
                                 enablePinching: true,
                                 zoomMode: ZoomMode.x),
-                            backgroundColor: Colors.grey,
+                            backgroundColor: Colors.white,
                             tooltipBehavior: _tooltip,
                             primaryXAxis: CategoryAxis(
+                              majorGridLines: MajorGridLines(width: 0),
                               labelStyle: TextStyle(color: Colors.black),
                             ),
                             primaryYAxis: NumericAxis(
@@ -425,7 +471,7 @@ class _MyBarChartState extends State<MyBarChart> {
                               LineSeries<_ChartData1, int>(
                                 width: 5,
                                 name: "Yıllık Kar",
-                                dashArray: <double>[10, 10],
+                                dashArray: <double>[1, 5],
                                 enableTooltip: true,
                                 dataSource: data2,
                                 xValueMapper: (_ChartData1 data2, index) =>

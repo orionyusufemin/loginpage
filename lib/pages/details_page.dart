@@ -160,9 +160,12 @@ class _DetailsPageState extends State<DetailsPage> {
                             builder: (context) => ChartPage(),
                           ));
                     },
-                    child: Text(
-                      "See graphs",
-                      style: TextStyle(fontSize: 24),
+                    child: Container(
+                      decoration: BoxDecoration(color: Colors.amber,borderRadius: BorderRadius.circular(20)),
+                      child: Text(
+                        "See graphs",
+                        style: TextStyle(fontSize: 24),
+                      ),
                     ),
                   ),
                   Icon(Icons.auto_graph_outlined)

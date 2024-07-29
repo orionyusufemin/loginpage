@@ -10,21 +10,21 @@ import 'package:shoppingapp/models/product.dart';
 import 'package:shoppingapp/pages/chart_page.dart';
 import 'package:shoppingapp/pages/details_page.dart';
 
-class ProductTile extends StatefulWidget {
+class CartProductTile extends StatefulWidget {
   final List<Product> products;
   final int index;
 
-  const ProductTile({
+  const CartProductTile({
     super.key,
     required this.products,
     required this.index,
   });
 
   @override
-  State<ProductTile> createState() => _ProductTileState();
+  State<CartProductTile> createState() => _ProductTileState();
 }
 
-class _ProductTileState extends State<ProductTile> {
+class _ProductTileState extends State<CartProductTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -99,10 +99,25 @@ class _ProductTileState extends State<ProductTile> {
                   color: Colors.black, borderRadius: BorderRadius.circular(25)),
               child: TextButton(
                   onPressed: () {
-                    //add to cart clicked
+                    //delete clicked
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("Product Successfully deleted"),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("Dismiss"))
+                          ],
+                        );
+                      },
+                    );
                   },
                   child: Text(
-                    "Add to cart.",
+                    "Delete From Cart",
                     style: TextStyle(color: Colors.white),
                   )),
             ),
