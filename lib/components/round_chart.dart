@@ -28,11 +28,12 @@ class _RoundChartState extends State<RoundChart> {
   @override
   Widget build(BuildContext context) {
     return SfCircularChart(
-      legend: Legend(isVisible: true),
+        legend: Legend(isVisible: true),
         tooltipBehavior: widget.tooltip,
         margin: EdgeInsets.all(0),
         series: <CircularSeries<_ChartData, String>>[
           DoughnutSeries(
+            
             explode: true,
             enableTooltip: true,
             dataSource: data1,

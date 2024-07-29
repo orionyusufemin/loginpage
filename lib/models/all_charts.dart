@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:shoppingapp/components/doughnut_chart.dart';
 import 'package:shoppingapp/components/round_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -295,9 +296,7 @@ class _MyBarChartState extends State<MyBarChart> {
           ),
           Padding(
               padding: EdgeInsets.all(10),
-              child: !isSwitched4
-                  ? RoundChart(tooltip: _tooltip,)
-                  : Text("tablo 4")),
+              child: !isSwitched4 ? RoundChart(tooltip: _tooltip,) : Text("tablo 4")),      //doughnut chart
           Divider(
             color: Colors.black,
           ),

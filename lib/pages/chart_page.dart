@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart ';
-import 'package:shoppingapp/models/my_bar_chart.dart';
+import 'package:shoppingapp/models/all_charts.dart';
 
 class ChartPage extends StatefulWidget {
   ChartPage({super.key});
