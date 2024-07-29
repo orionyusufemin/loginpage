@@ -29,7 +29,7 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         activeColor: Colors.black,
 
-        tabBackgroundColor: Colors.deepPurple.shade100,
+        tabBackgroundColor: Colors.grey.shade100,
         tabs: [
           //onemlı
           GButton(

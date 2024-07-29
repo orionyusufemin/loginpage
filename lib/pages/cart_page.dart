@@ -22,7 +22,7 @@ class _ProfilePageState extends State<CartPage> {
     String getCartProductsUrl =
         "https://fakestoreapi.com/carts/user/${widget.id}";
     final response = await http.get(Uri.parse(getCartProductsUrl));
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && mounted) {
       setState(() {
         List<dynamic> jsonList = jsonDecode(response.body) as List<dynamic>;
         cartProducts = jsonList.map((json) => CartProduct.fromJson(json)).toList();

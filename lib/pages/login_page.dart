@@ -43,8 +43,10 @@ class _LoginPageState extends State<LoginPage> {
             SharedPreferences sharedPreferences =
                 await SharedPreferences.getInstance();
             sharedPreferences.setString("currentUser", jsonEncode(user));
+            sharedPreferences.setBool("isLoggedIn", true);
             //user found
             print("User logged in");
+            print(user.username);
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -71,8 +73,9 @@ class _LoginPageState extends State<LoginPage> {
     bool isLoggedIn = sharedPreferences.getBool("isLoggedIn") ?? false;
     String currentUserString =
         sharedPreferences.getString("currentUser") ?? "bos";
-    User currentUser = User.fromJson(jsonDecode(currentUserString));
-    if (isLoggedIn && currentUser.toString() != "bos") {
+
+    if (isLoggedIn && currentUserString.toString() != "bos") {
+      User currentUser = User.fromJson(jsonDecode(currentUserString));
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -84,6 +87,7 @@ class _LoginPageState extends State<LoginPage> {
         isDone = true;
       });
     } else {
+      print("user not logged in yet.");
       //user not logged in yet.
       setState(() {
         isDone = true;
