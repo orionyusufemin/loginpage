@@ -12,6 +12,7 @@ class ChartPage extends StatefulWidget {
 }
 
 class _ChartPageState extends State<ChartPage> {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,11 +22,16 @@ class _ChartPageState extends State<ChartPage> {
           children: [
             Center(
               child: Expanded(
-                child: Card(
-                  elevation: 10,
-                  shadowColor: Colors.black,
-                  child: ListTile(leading: Icon(Icons.person),
-                  trailing: Icon(Icons.arrow_circle_up_rounded),),
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(25)),
+                  child: Text(
+                    "Toplam Satış :\n24.672.383",
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
                 ),
               ),
             ),

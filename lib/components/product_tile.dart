@@ -45,7 +45,7 @@ class _ProductTileState extends State<ProductTile> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            ChartPage(),
+                            ChartPage(),fullscreenDialog: true
                       ));
                 },
                 child: ClipRRect(
